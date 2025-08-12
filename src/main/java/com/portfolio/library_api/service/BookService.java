@@ -52,4 +52,22 @@ public class BookService {
     public void deleteBook(Long id){
         repository.deleteById(id);
     }
+
+    public Optional<BookDTO> borrowBook(Long id){
+        return repository.findById(id).map(book -> {
+            if (book.getQuantity() > 0){
+                book.setQuantity(book.getQuantity() - 1);
+                repository.save(book);
+            }
+            return toBookDTO(book);
+        });
+    }
+
+    public Optional<BookDTO> returnBook(Long id){
+        return repository.findById(id).map(book -> {
+            book.setQuantity(book.getQuantity() + 1);
+            repository.save(book);
+            return toBookDTO(book);
+        });
+    }
 }

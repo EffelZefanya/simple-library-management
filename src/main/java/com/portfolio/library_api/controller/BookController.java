@@ -9,13 +9,13 @@ import com.portfolio.library_api.service.BookService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -48,5 +48,19 @@ public class BookController {
     public ResponseEntity<Void> deleteBook(@PathVariable Long id){
         service.deleteBook(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/borrow")
+    public ResponseEntity<BookDTO> borrowBook(@PathVariable Long id){
+        return service.borrowBook(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PatchMapping("/{id}/return")
+    public ResponseEntity<BookDTO> putMethodName(@PathVariable Long id) {
+        return service.returnBook(id)
+            .map(ResponseEntity::ok)
+            .orElse(ResponseEntity.notFound().build());
     }
 }

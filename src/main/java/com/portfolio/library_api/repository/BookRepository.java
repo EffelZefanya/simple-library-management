@@ -21,8 +21,12 @@ public class BookRepository {
     }
 
     public Book save(Book book){
-        book.setId(nextId++);
-        books.add(book);
+        if (book.getId() == null){
+            book.setId(nextId++);
+            books.add(book);
+        }else {
+            books.replaceAll(b -> b.getId().equals(book.getId()) ? book : b);
+        }
         return book;
     }
 
